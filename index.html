@@ -3,49 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scatter Plot</title>
-    <!-- Include Chart.js from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>2D Gaussian Heatmap</title>
+    <!-- Include Plotly from CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 
-    <canvas id="scatterPlot" width="400" height="400"></canvas>
+    <div id="heatmap" style="width: 600px; height: 400px;"></div>
 
     <script>
-        // Your data for the scatter plot
-        var data = {
-            datasets: [{
-                label: 'Scatter Plot',
-                data: [
-                    { x: 10, y: 20 },
-                    { x: 25, y: 35 },
-                    // Add more data points as needed
-                ],
-                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Optional: Set point color
-                pointRadius: 8, // Optional: Set point radius
-            }]
+        // Corrected function to calculate 2D Gaussian values with the center at (2,3)
+        function gaussian2D(x, y, x0, y0, sigma) {
+            return Math.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2));
+        }
+
+        // Set variables for the number of x-values, number of y-values, and their limits
+        var Nx = 10; // Number of x-values
+        var Ny = 20; // Number of y-values
+        var xmin = -5; // Minimum x-value
+        var xmax = 5;  // Maximum x-value
+        var ymin = -10; // Minimum y-value
+        var ymax = 10;  // Maximum y-value
+
+        // Generate data for a 2D Gaussian function (transposed)
+        var data = [];
+        var xValues = [];
+        var yValues = [];
+
+        for (var y = ymin; y <= ymax; y += (ymax - ymin) / Ny) {
+            var row = [];
+            yValues.push(y.toFixed(1)); // Store formatted y values for labels
+            for (var x = xmin; x <= xmax; x += (xmax - xmin) / Nx) {
+                if (y === ymin) xValues.push(x.toFixed(1)); // Store formatted x values for labels
+                row.push(gaussian2D(x, y, 2, 3, 1)); // Adjust parameters as needed
+            }
+            data.push(row);
+        }
+
+        // Create the heatmap using Plotly
+        var trace = {
+            x: xValues,
+            y: yValues,
+            z: data,
+            type: 'heatmap',
+            colorscale: 'Viridis'
         };
 
-        // Get the canvas element
-        var ctx = document.getElementById('scatterPlot').getContext('2d');
+        var layout = {
+            xaxis: {
+                title: 'X Axis'
+            },
+            yaxis: {
+                title: 'Y Axis',
+                range: [ymin, ymax] // Set the desired y-axis range
+            },
+            title: '2D Gaussian Heatmap'
+        };
 
-        // Create the scatter plot
-        var scatterChart = new Chart(ctx, {
-            type: 'scatter',
-            data: data,
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom'
-                    },
-                    y: {
-                        type: 'linear',
-                        position: 'left'
-                    }
-                }
-            }
-        });
+        Plotly.newPlot('heatmap', [trace], layout);
     </script>
 
 </body>
