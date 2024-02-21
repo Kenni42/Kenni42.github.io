@@ -3,15 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World with JavaScript</title>
+    <title>Scatter Plot</title>
+    <!-- Include Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <h1>Hello World</h1>
+    <canvas id="scatterPlot" width="400" height="400"></canvas>
 
     <script>
-        // Your JavaScript code goes here
-        alert("Hello, World!");
+        // Your data for the scatter plot
+        var data = {
+            datasets: [{
+                label: 'Scatter Plot',
+                data: [
+                    { x: 10, y: 20 },
+                    { x: 25, y: 35 },
+                    // Add more data points as needed
+                ],
+                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Optional: Set point color
+                pointRadius: 8, // Optional: Set point radius
+            }]
+        };
+
+        // Get the canvas element
+        var ctx = document.getElementById('scatterPlot').getContext('2d');
+
+        // Create the scatter plot
+        var scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        type: 'linear',
+                        position: 'left'
+                    }
+                }
+            }
+        });
     </script>
 
 </body>
