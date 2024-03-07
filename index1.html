@@ -53,10 +53,16 @@ function getDataAndUpdateChart() {
 
 // Function to parse localized float (replace commas with dots)
 function parseLocalizedFloat(value) {
-    // Replace commas with dots and parse the float
-    return parseFloat(value.replace(',', '.'));
-}
-        // Function to update the line chart
+    // Check if the value is defined before attempting to replace
+    if (value !== undefined) {
+        // Replace commas with dots and parse the float
+        return parseFloat(value.replace(',', '.'));
+    }
+    
+    // Return NaN if the value is undefined
+    return NaN;
+} 
+    // Function to update the line chart
     function updateChart(xData, yData) {
         console.log('yData:', yData);
     const ctx = document.getElementById('myChart').getContext('2d');
