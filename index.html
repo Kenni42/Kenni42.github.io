@@ -3,65 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Gaussian Heatmap</title>
-    <!-- Include Plotly from CDN -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Line Chart Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Container styling */
+        .chart-container {
+            width: 400px; /* Adjust the width as needed */
+            margin: auto; /* Center the container */
+        }
+
+        /* Canvas styling */
+        #myChart {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="heatmap" style="width: 600px; height: 400px;"></div>
+<!-- Create a container for the chart -->
+<div class="chart-container">
+    <!-- Create a smaller canvas element to render the chart -->
+    <canvas id="myChart"></canvas>
+</div>
 
-    <script>
-        // Corrected function to calculate 2D Gaussian values with the center at (2,3)
-        function gaussian2D(x, y, x0, y0, sigma) {
-            return Math.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2));
-        }
+<script>
+    var xData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+    var yData = [108.4, 107.7, 107.4, 107.8, 106.5, 106.5, 106.5, 106.4, 106.5, 105.7, 106.2, 106.2, 106.2, 105.5, 106.4, 105.2, 104.5, 103.9];
 
-        // Set variables for the number of x-values, number of y-values, and their limits
-        var Nx = 10; // Number of x-values
-        var Ny = 20; // Number of y-values
-        var xmin = -5; // Minimum x-value
-        var xmax = 5;  // Maximum x-value
-        var ymin = -10; // Minimum y-value
-        var ymax = 10;  // Maximum y-value
+    var ctx = document.getElementById('myChart').getContext('2d');
 
-        // Generate data for a 2D Gaussian function (transposed)
-        var data = [];
-        var xValues = [];
-        var yValues = [];
-
-        for (var y = ymin; y <= ymax; y += (ymax - ymin) / Ny) {
-            var row = [];
-            yValues.push(y.toFixed(1)); // Store formatted y values for labels
-            for (var x = xmin; x <= xmax; x += (xmax - xmin) / Nx) {
-                if (y === ymin) xValues.push(x.toFixed(1)); // Store formatted x values for labels
-                row.push(gaussian2D(x, y, 2, 3, 1)); // Adjust parameters as needed
+    var myChart = new Chart(ctx, {
+        type: 'line',  // Change the chart type to 'line'
+        data: {
+            datasets: [{
+                label: 'Line Chart',
+                data: getLineData(xData, yData),
+                borderColor: 'rgba(75, 192, 192, 1)', // Set the color of the line
+                borderWidth: 2,  // Set the width of the line
+                fill: false  // Do not fill the area under the line
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left'
+                }
             }
-            data.push(row);
         }
+    });
 
-        // Create the heatmap using Plotly
-        var trace = {
-            x: xValues,
-            y: yValues,
-            z: data,
-            type: 'heatmap',
-            colorscale: 'Viridis'
-        };
-
-        var layout = {
-            xaxis: {
-                title: 'X Axis'
-            },
-            yaxis: {
-                title: 'Y Axis',
-                range: [ymin, ymax] // Set the desired y-axis range
-            },
-            title: '2D Gaussian Heatmap'
-        };
-
-        Plotly.newPlot('heatmap', [trace], layout);
-    </script>
+    function getLineData(xValues, yValues) {
+        var lineData = [];
+        for (var i = 0; i < xValues.length; i++) {
+            lineData.push({ x: xValues[i], y: yValues[i] });
+        }
+        return lineData;
+    }
+</script>
 
 </body>
 </html>
