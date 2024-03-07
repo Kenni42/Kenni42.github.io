@@ -31,7 +31,7 @@
 function getDataAndUpdateChart() {
     gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: 'Sheet1!A:B',  // Specify the sheet name and columns
+        range: 'range: 'Ark1!A3:B',  // Specify the sheet name and columns
     }).then(function(response) {
         const values = response.result.values;
 
