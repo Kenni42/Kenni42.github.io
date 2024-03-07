@@ -27,27 +27,35 @@
             });
         }
 
-        // Function to fetch data from Google Sheet and update the chart
-        function getDataAndUpdateChart() {
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: sheetId,
-                range: 'Ark1!B3:C',  // Specify the sheet name and columns
-            }).then(function(response) {
-                const values = response.result.values;
-                console.log('Google Sheets Data:', values);
-                if (values && values.length > 0) {
-                    // Assuming the first column contains x values and the second column contains y values
-                    const xData = values.map(row => parseFloat(row[0]));
-                    const yData = values.map(row => parseFloat(row[1]));
+// Function to fetch data from Google Sheet and update the chart
+function getDataAndUpdateChart() {
+    gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        range: 'Sheet1!A:B',  // Specify the sheet name and columns
+    }).then(function(response) {
+        const values = response.result.values;
 
-                    // Update the chart with the fetched data
-                    updateChart(xData, yData);
-                } else {
-                    console.error('No data found in the specified range.');
-                }
-            });
+        // Log the content of values
+        console.log('Google Sheets Data:', values);
+
+        if (values && values.length > 0) {
+            // Assuming the first column contains x values and the second column contains y values
+            const xData = values.map(row => parseLocalizedFloat(row[0]));
+            const yData = values.map(row => parseLocalizedFloat(row[1]));
+
+            // Update the chart with the fetched data
+            updateChart(xData, yData);
+        } else {
+            console.error('No data found in the specified range.');
         }
+    });
+}
 
+// Function to parse localized float (replace commas with dots)
+function parseLocalizedFloat(value) {
+    // Replace commas with dots and parse the float
+    return parseFloat(value.replace(',', '.'));
+}
         // Function to update the line chart
     function updateChart(xData, yData) {
         console.log('yData:', yData);
