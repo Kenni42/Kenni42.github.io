@@ -62,7 +62,7 @@ function parseLocalizedFloat(value) {
     // Return NaN if the value is undefined
     return NaN;
 } 
- 
+
 // Function to update the line chart
 function updateChart(xData, yData) {
     const ctx = document.getElementById('myChart').getContext('2d');
@@ -73,7 +73,7 @@ function updateChart(xData, yData) {
         data: {
             labels: xData.map(String), // Convert xData to strings for labels
             datasets: [{
-                label: 'Kenni',
+                label: 'My Data',
                 data: yData,
                 borderColor: 'rgb(75, 192, 192)',
                 borderWidth: 2,
@@ -82,22 +82,29 @@ function updateChart(xData, yData) {
         },
         options: {
             scales: {
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Dage siden 19. februar 2024', // Set your x-axis label here
-                    },
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Vægt (kg)', // Set your y-axis label here
-                    },
-                }],
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left',
+                },
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart Title',
+                },
             },
         },
     });
-}        
+}
+        
         // Load the Google Sheets API and initialize the client
         gapi.load('client', initClient);
     </script>
