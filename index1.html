@@ -34,7 +34,7 @@
                 range: 'Ark1!B3:C',  // Specify the sheet name and columns
             }).then(function(response) {
                 const values = response.result.values;
-
+                console.log('Google Sheets Data:', values);
                 if (values && values.length > 0) {
                     // Assuming the first column contains x values and the second column contains y values
                     const xData = values.map(row => parseFloat(row[0]));
