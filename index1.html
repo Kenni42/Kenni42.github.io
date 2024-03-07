@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheets API Example</title>
+    <title>Line Chart from Google Sheets</title>
+
+    <!-- Load Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Load the Google Sheets API library -->
     <script src="https://apis.google.com/js/api.js"></script>
@@ -19,13 +22,13 @@
                 'apiKey': apiKey,
                 'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
             }).then(function() {
-                // Call the function to fetch data
-                getDataFromSheet();
+                // Call the function to fetch data and update the chart
+                getDataAndUpdateChart();
             });
         }
 
-        // Function to fetch data from Google Sheet
-        function getDataFromSheet() {
+        // Function to fetch data from Google Sheet and update the chart
+        function getDataAndUpdateChart() {
             gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: sheetId,
                 range: 'Ark1!A3:B',  // Specify the sheet name and columns
@@ -37,12 +40,39 @@
                     const xData = values.map(row => parseFloat(row[0]));
                     const yData = values.map(row => parseFloat(row[1]));
 
-                    // Display or further process the data as needed
-                    console.log('X Data:', xData);
-                    console.log('Y Data:', yData);
+                    // Update the chart with the fetched data
+                    updateChart(xData, yData);
                 } else {
                     console.error('No data found in the specified range.');
                 }
+            });
+        }
+
+        // Function to update the line chart
+        function updateChart(xData, yData) {
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // Create the line chart
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xData,
+                    datasets: [{
+                        label: 'My Data',
+                        data: yData,
+                        borderColor: 'rgb(75, 192, 192)',
+                        borderWidth: 2,
+                        fill: false,
+                    }],
+                },
+                options: {
+                    scales: {
+                        x: [{
+                            type: 'linear',
+                            position: 'bottom',
+                        }],
+                    },
+                },
             });
         }
 
@@ -51,6 +81,7 @@
     </script>
 </head>
 <body>
-    <!-- Content of the HTML body -->
+    <!-- Chart canvas -->
+    <canvas id="myChart" width="400" height="200"></canvas>
 </body>
 </html>
