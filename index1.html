@@ -14,7 +14,7 @@
     <script>
         // Replace with your API key and Google Sheet ID
         const apiKey = 'AIzaSyAVkGRNEasbWyomIXK6m6WvF07uL-y-gbM';
-        const sheetId = '16crRsUkqQvuDdJFBtRv5L6Vz0OnPRW7IqVTuSzdCDJA';
+        const sheetId = '13MQgK_-YBdYTW7p4DESjh0tYaCdBJp-brHIk3qpE6bo';
 
         // Function to load the Google Sheets API
         function initClient() {
@@ -31,7 +31,7 @@
         function getDataAndUpdateChart() {
             gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: sheetId,
-                range: 'Ark1!A3:B',  // Specify the sheet name and columns
+                range: 'Ark1!B3:C',  // Specify the sheet name and columns
             }).then(function(response) {
                 const values = response.result.values;
 
