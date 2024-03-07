@@ -71,9 +71,9 @@ function updateChart(xData, yData) {
     const myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: xData,
+            labels: xData.map(String), // Convert xData to strings for labels
             datasets: [{
-                label: 'My Data',
+                label: 'Kenni',
                 data: yData,
                 borderColor: 'rgb(75, 192, 192)',
                 borderWidth: 2,
@@ -82,27 +82,22 @@ function updateChart(xData, yData) {
         },
         options: {
             scales: {
-                x: {
-                    type: 'linear',
-                    position: 'bottom',
+                xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'Dage siden 19. februar 2024', // Set your x-axis label here
                     },
-                },
-                y: {
-                    type: 'linear',
-                    position: 'left',
+                }],
+                yAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'Vægt (kg)', // Set your y-axis label here
                     },
-                },
+                }],
             },
         },
     });
-}
-        
+}        
         // Load the Google Sheets API and initialize the client
         gapi.load('client', initClient);
     </script>
