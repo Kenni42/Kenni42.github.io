@@ -80,28 +80,34 @@ function updateChart(xData, yData) {
                 fill: false,
             }],
         },
-        options: {
-            scales: {
-                x: {
-                    type: 'linear',
-                    position: 'bottom',
+options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'X-Axis Label',
+                            },
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Y-Axis Label',
+                            },
+                        },
+                    },
+                    layout: {
+                        padding: {
+                            top: 10,
+                            right: 10,
+                            bottom: 10,
+                            left: 10,
+                        },
+                    },
                 },
-                y: {
-                    type: 'linear',
-                    position: 'left',
-                },
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart Title',
-                },
-            },
-        },
     });
 }
         
