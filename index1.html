@@ -49,33 +49,36 @@
         }
 
         // Function to update the line chart
-        function updateChart(xData, yData) {
-            const ctx = document.getElementById('myChart').getContext('2d');
+    function updateChart(xData, yData) {
+    const ctx = document.getElementById('myChart').getContext('2d');
 
-            // Create the line chart
-            const myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: xData,
-                    datasets: [{
-                        label: 'My Data',
-                        data: yData,
-                        borderColor: 'rgb(75, 192, 192)',
-                        borderWidth: 2,
-                        fill: false,
-                    }],
+    // Create the line chart
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xData,
+            datasets: [{
+                label: 'My Data',
+                data: yData,
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 2,
+                fill: false,
+            }],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',  // Use 'linear' for numeric x-axis
+                    position: 'bottom',
                 },
-                options: {
-                    scales: {
-                        x: [{
-                            type: 'linear',
-                            position: 'bottom',
-                        }],
-                    },
+                y: {
+                    type: 'linear',  // Use 'linear' for numeric y-axis
+                    position: 'left',
                 },
-            });
-        }
-
+            },
+        },
+    });
+}
         // Load the Google Sheets API and initialize the client
         gapi.load('client', initClient);
     </script>
