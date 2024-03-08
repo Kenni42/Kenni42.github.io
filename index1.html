@@ -3,120 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Line Chart from Google Sheets</title>
-
-    <!-- Load Chart.js library -->
+    <title>Line Chart Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Load the Google Sheets API library -->
-    <script src="https://apis.google.com/js/api.js"></script>
-
-    <script>
-        // Replace with your API key and Google Sheet ID
-        const apiKey = 'AIzaSyAVkGRNEasbWyomIXK6m6WvF07uL-y-gbM';
-        const sheetId = '13MQgK_-YBdYTW7p4DESjh0tYaCdBJp-brHIk3qpE6bo';
-
-        // Function to load the Google Sheets API
-        function initClient() {
-            gapi.client.init({
-                'apiKey': apiKey,
-                'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-            }).then(function() {
-                // Call the function to fetch data and update the chart
-                getDataAndUpdateChart();
-            });
+    <style>
+        /* Container styling */
+        .chart-container {
+            width: 400px; /* Adjust the width as needed */
+            margin: auto; /* Center the container */
         }
 
-// Function to fetch data from Google Sheet and update the chart
-function getDataAndUpdateChart() {
-    gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: sheetId,
-        range: 'Ark1!B3:C',  // Specify the sheet name and columns
-    }).then(function(response) {
-        const values = response.result.values;
-
-        // Log the content of values
-        console.log('Google Sheets Data:', values);
-
-        if (values && values.length > 0) {
-            // Assuming the first column contains x values and the second column contains y values
-            const xData = values.map(row => parseLocalizedFloat(row[0]));
-            const yData = values.map(row => parseLocalizedFloat(row[1]));
-
-            // Update the chart with the fetched data
-            updateChart(xData, yData);
-        } else {
-            console.error('No data found in the specified range.');
+        /* Canvas styling */
+        #myChart {
+            width: 100%;
+            height: auto;
         }
-    });
-}
-
-// Function to parse localized float (replace commas with dots)
-function parseLocalizedFloat(value) {
-    // Check if the value is defined before attempting to replace
-    if (value !== undefined) {
-        // Replace commas with dots and parse the float
-        return parseFloat(value.replace(',', '.'));
-    }
-    
-    // Return NaN if the value is undefined
-    return NaN;
-} 
-
-// Function to update the line chart
-function updateChart(xData, yData) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-
-    // Create the line chart
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: xData.map(String), // Convert xData to strings for labels
-            datasets: [{
-                label: 'My Data',
-                data: yData,
-                borderColor: 'rgb(75, 192, 192)',
-                borderWidth: 2,
-                fill: false,
-            }],
-        },
-options: {
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'bottom',
-                            title: {
-                                display: true,
-                                text: 'Dage siden 19. februar',
-                            },
-                        },
-                        y: {
-                            type: 'linear',
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Vægt (kg)',
-                            },
-                        },
-                    },
-                    layout: {
-                        padding: {
-                            top: 10,
-                            right: 10,
-                            bottom: 10,
-                            left: 10,
-                        },
-                    },
-                },
-    });
-}
-        
-        // Load the Google Sheets API and initialize the client
-        gapi.load('client', initClient);
-    </script>
+    </style>
 </head>
 <body>
-    <!-- Chart canvas -->
-    <canvas id="myChart" width="400" height="200"></canvas>
+
+<!-- Create a container for the chart -->
+<div class="chart-container">
+    <!-- Create a smaller canvas element to render the chart -->
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    var xData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+    var yData = [108.4, 107.7, 107.4, 107.8, 106.5, 106.5, 106.5, 106.4, 106.5, 105.7, 106.2, 106.2, 106.2, 105.5, 106.4, 105.2, 104.5, 103.9];
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'line',  // Change the chart type to 'line'
+        data: {
+            datasets: [{
+                label: 'Line Chart',
+                data: getLineData(xData, yData),
+                borderColor: 'rgba(75, 192, 192, 1)', // Set the color of the line
+                borderWidth: 2,  // Set the width of the line
+                fill: false  // Do not fill the area under the line
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left'
+                }
+            }
+        }
+    });
+
+    function getLineData(xValues, yValues) {
+        var lineData = [];
+        for (var i = 0; i < xValues.length; i++) {
+            lineData.push({ x: xValues[i], y: yValues[i] });
+        }
+        return lineData;
+    }
+</script>
+
 </body>
 </html>
